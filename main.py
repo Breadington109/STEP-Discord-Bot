@@ -65,11 +65,11 @@ async def on_message(message):
         except Exception as e:
             print(f"Error: {e}")
             await message.channel.send("❌ Something went wrong posting your question.")
-    else:
+    #else:
         # Optionally, inform users not to use the bot in servers
-        await message.channel.send(
-            "❌ Please DM me your question so it stays anonymous."
-        )
+    #    await message.channel.send(
+    #        "❌ Please DM me your question so it stays anonymous."
+    #    )
         
 # Start the bot
 keep_alive()
