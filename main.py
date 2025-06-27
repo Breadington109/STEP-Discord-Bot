@@ -46,9 +46,9 @@ async def on_message(message):
     if message.channel.id == TARGET_CHANNEL_ID:
         try:
             # Send DM to the owner
-            owner = await bot.fetch_user(OWNER_USER_ID)
+            owner = await bot.fetch_user(1388217372837417051)
             await owner.send(
-                f"New message from {message.author} in #{message.channel}:\n\n{message.content}"
+                f"**New message from {message.author} in #{message.channel}:**\n\n{message.content}"
             )
 
             # Delete the original message
