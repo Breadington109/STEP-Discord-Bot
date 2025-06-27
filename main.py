@@ -20,7 +20,7 @@ import discord
 from discord.ext import commands
 
 # Replace these with your values
-TOKEN = 'MTM4NjczMjY0MjY2OTQzMjg1Mg.GyqUPm.TlxtPVwed5_KXk-XBCt7vfOMpd2OfYrNbFtn30'
+token = os.getenv("TOKEN")
 TARGET_CHANNEL_ID = 1386730467730129077  # Channel where questions are asked
 OWNER_USER_ID = 692429491003326524     # Your Discord user ID
 
@@ -62,4 +62,4 @@ async def on_message(message):
 
 # Start the bot
 keep_alive()
-bot.run(TOKEN)
+bot.run(token)
