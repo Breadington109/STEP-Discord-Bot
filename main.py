@@ -36,28 +36,40 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user}!')
 
-@bot.command(name="ask")
-async def ask(ctx, *, question: str):
-    try:
-        target_channel = bot.get_channel(TARGET_CHANNEL_ID)
-        if target_channel is None:
-            await ctx.send("❌ I couldn't find the target channel.")
-            return
+@bot.event
+async def on_message(message):
+    # Ignore messages from the bot itself
+    if message.author == bot.user:
+        return
 
-        # Post anonymous question without mentioning anyone
-        await target_channel.send(f"**Anonymous question:**\n{question}")
+    # Only handle DMs
+    if message.guild is None:
+        try:
+            target_channel = bot.get_channel(TARGET_CHANNEL_ID)
+            if target_channel is None:
+                await message.channel.send("❌ I couldn't find the anonymous channel.")
+                return
 
-        # Optionally DM the owner that a new question came in
-        #owner = await bot.fetch_user(OWNER_USER_ID)
-        #await owner.send(
-        #    f"New anonymous question submitted by {ctx.author}:\n\n{question}"
-        #)
+            # Post anonymously
+            await target_channel.send(f"**Anonymous question:**\n{message.content}")
 
-        # Confirm to the user
-        await ctx.send("✅ Your question has been sent!", delete_after=10)
+            # Optionally notify the owner privately
+            #owner = await bot.fetch_user(OWNER_USER_ID)
+            #await owner.send(
+            #    f"New anonymous question submitted by {message.author}:\n\n{message.content}"
+            #)
 
-    except Exception as e:
-        print(f"Error: {e}")
+            # Confirm to the user
+            await message.channel.send("✅ Your anonymous question has been posted!")
+
+        except Exception as e:
+            print(f"Error: {e}")
+            await message.channel.send("❌ Something went wrong posting your question.")
+    else:
+        # Optionally, inform users not to use the bot in servers
+        await message.channel.send(
+            "❌ Please DM me your question so it stays anonymous."
+        )
         
 # Start the bot
 keep_alive()
